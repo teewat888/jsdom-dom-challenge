@@ -17,6 +17,9 @@ window.addEventListener("DOMContentLoaded", (e) => {
   const minus = document.getElementById("minus");
   const plus = document.getElementById("plus");
   const heart = document.getElementById("heart");
+  const comments = document.getElementById("list");
+  const commentInput = document.getElementById("comment-input");
+  const submitBtn = document.getElementById("submit");
 
   pause.addEventListener("click", () => {
     if (!pauseState) {
@@ -44,18 +47,17 @@ window.addEventListener("DOMContentLoaded", (e) => {
     up();
   });
 
-  let ullike = document.getElementsByClassName("likes")[0];
+  let ulLike = document.getElementsByClassName("likes")[0];
 
   const likes = [];
-  const likeObj = {};
-  likeObj.number = "";
-  likeObj.count = 0;
+  const likeObj = Object.assign({ number: "" }, { count: 1 });
   likes.push(likeObj);
 
-
   const makeLikeStatement = (likes) => {
-    const foundId = likes.findIndex((like) => like.number === counter.innerText );
-    
+    const foundId = likes.findIndex(
+      (like) => like.number === counter.innerText
+    );
+
     if (foundId !== -1) {
       likes[foundId].count++;
       const li = document.getElementById(`li${likes[foundId].number}`);
@@ -77,11 +79,18 @@ window.addEventListener("DOMContentLoaded", (e) => {
         " has been liked " +
         likes[likesLength - 1].count +
         " time";
-      ullike.appendChild(myLi);
+      ulLike.appendChild(myLi);
     }
   };
 
   heart.addEventListener("click", () => {
     makeLikeStatement(likes);
+  });
+
+  submitBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const commentItem = document.createElement("p");
+    commentItem.innerText = commentInput.value;
+    comments.appendChild(commentItem);
   });
 });
