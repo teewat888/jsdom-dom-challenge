@@ -1,7 +1,8 @@
-window.addEventListener("DOMContentLoaded", (e) => {
+document.addEventListener("DOMContentLoaded", (e) => {
   let counter = document.getElementById("counter");
   let mytimer; //intervalID
-  let pauseState = false;
+  let pauseState = false; // pause state
+  const likes = [{ number: "", count: 1 }]; //init likes array
 
   const up = () => (counter.innerText = parseInt(counter.innerText) + 1);
   const down = () => (counter.innerText = parseInt(counter.innerText) - 1);
@@ -47,20 +48,17 @@ window.addEventListener("DOMContentLoaded", (e) => {
     up();
   });
 
-  let ulLike = document.getElementsByClassName("likes")[0];
+  const makeLikeStatement = () => {
+    let ulLike = document.getElementsByClassName("likes")[0];
 
-  const likes = [];
-  const likeObj = Object.assign({ number: "" }, { count: 1 });
-  likes.push(likeObj);
-
-  const makeLikeStatement = (likes) => {
     const foundId = likes.findIndex(
       (like) => like.number === counter.innerText
     );
 
     if (foundId !== -1) {
       likes[foundId].count++;
-      const li = document.getElementById(`li${likes[foundId].number}`);
+      //const li = document.getElementById(`li${likes[foundId].number}`);
+      const li = document.querySelector(`ul.likes li[data-num="${likes[foundId].number}"`);
       li.innerText =
         likes[foundId].number +
         " has been liked " +
@@ -73,7 +71,8 @@ window.addEventListener("DOMContentLoaded", (e) => {
       );
       const likesLength = likes.push(newLike);
       const myLi = document.createElement("li");
-      myLi.setAttribute("id", `li${likes[likesLength - 1].number}`);
+      //myLi.setAttribute("id", `li${likes[likesLength - 1].number}`);
+      myLi.setAttribute("data-num", `${likes[likesLength - 1].number}`);
       myLi.innerText =
         likes[likesLength - 1].number +
         " has been liked " +
@@ -84,7 +83,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
   };
 
   heart.addEventListener("click", () => {
-    makeLikeStatement(likes);
+    makeLikeStatement();
   });
 
   submitBtn.addEventListener("click", (e) => {
